@@ -1,3 +1,8 @@
+import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 public class Main {
     public void displayMenu() {
         System.out.println("""
@@ -9,17 +14,81 @@ public class Main {
             """);
     }
     public static void main(String[] args) {
-        System.out.println("SCHOOL MANAGEMENT SYSTEM");
-        System.out.println("------------------------");
+        try {
+            Scanner input = new Scanner(System.in);
+            Main mainMenu = new Main();
+            ArrayList<Student> allStudents = new ArrayList<>();
 
-        Student student1 = new Student("Alice", 2000, "Computer Science", new String[]{"Math", "Science"});
-        student1.displayStudentInfo();
-        student1.setScores(new double[]{85.5, 92.0});
-        System.out.println("Average Score: " + student1.calculateAverageScore());
+            while (true) {
+            mainMenu.displayMenu();
+            int choice = input.nextInt();
 
-        Student student2 = new Student("Bob", 1999, "Engineering", new String[]{"Physics", "Chemistry"});   
-        student2.displayStudentInfo();
-        student2.setScores(new double[]{78.0, 88.5});
-        System.out.println("Average Score: " + student2.calculateAverageScore());
+            switch (choice) {
+            case 1: {
+            // first option
+            System.out.println("Enter your name");
+            input.nextLine();
+            String name = input.nextLine();
+            System.out.flush();
+
+            System.out.println("Enter your date of birth (eg 2000 - 01 - 01)");
+            String dobStr = input.nextLine();
+            LocalDate DOB = LocalDate.parse(dobStr, DateTimeFormatter.ISO_DATE);
+
+            System.out.println("Program of study");
+            String programOfStudy = input.nextLine();
+            System.out.println("Enter number of courses");
+            int numberOfCourses = input.nextInt();
+            input.nextLine();
+            System.out.println("Enter your courses");
+            String[] courses = new String[numberOfCourses];
+            for (int i = 0; i < numberOfCourses; i++) {
+            System.out.println("Course " + (i + 1));
+            courses[i] = input.nextLine();
+            } 
+
+            Student student = new Student(name, DOB, programOfStudy, courses);
+            allStudents.add(student);
+
+            break;
+            }
+            case 2: {
+            // second 
+
+            if (allStudents == null) {
+            System.out.println("Student list is empty");
+            }
+            else {
+            allStudents.forEach(student -> student.displayStudentInfo());
+            }
+            break;
+            }
+            case 3: {
+            // third option
+            break;
+            }
+            case 4: {
+            // fourth option
+            break;
+            }
+            case 5: {
+            // fifth option
+            break;
+            }
+            default: {
+            // invalid option
+            break;
+            }
+            }
+}
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong...");
+        }
+
+        finally {
+            System.out.println();
+        }
     }
+
 }

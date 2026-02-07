@@ -1,13 +1,16 @@
+import java.time.LocalDate;
+
+
 public class Student {
     private static int idCounter = 1;
-    private static String StudentID;
+    private String StudentID;
     String name;
-    int dateOfBirth;
+    LocalDate dateOfBirth;
     String programOfStudy;
     String[] courses;
     double[] scores;
 
-    public Student(String name, int dateOfBirth, String programOfStudy, String[] courses) {
+    public Student(String name, LocalDate dateOfBirth, String programOfStudy, String[] courses) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty.");
         }
