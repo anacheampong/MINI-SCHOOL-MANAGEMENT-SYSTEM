@@ -4,13 +4,13 @@ import java.time.LocalDate;
 public class Student {
     private static int idCounter = 1;
     private String StudentID;
-    String name;
+    private String name;
     LocalDate dateOfBirth;
     String programOfStudy;
     String[] courses;
     double[] scores;
 
-    public Student(String name, LocalDate dateOfBirth, String programOfStudy, String[] courses) {
+    public Student(String name, LocalDate dateOfBirth, String programOfStudy, String[] courses){
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty.");
         }
@@ -20,6 +20,10 @@ public class Student {
         this.courses = courses;
         this.StudentID = "STU - %04d".formatted(idCounter);
         idCounter++;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getStudentID() {
@@ -33,7 +37,7 @@ public class Student {
         System.out.println("Program of Study: " + programOfStudy);
         System.out.print("Courses: ");
         for (String course : courses) {
-            System.out.println(course);
+            System.out.print(course + " ");
         }
         System.out.println();
     }

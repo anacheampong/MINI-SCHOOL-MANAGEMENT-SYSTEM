@@ -13,9 +13,21 @@ public class Main {
             5. Exit application
             """);
     }
+
+    public void findStudents(ArrayList<Student> allStudents, ArrayList<Student> foundStudents, boolean studentFound, String searchStudent) {
+        // method to find students by name or ID
+        for (Student student : allStudents) {
+                            if (student.getStudentID().equalsIgnoreCase(searchStudent)
+                                    || student.getName().equalsIgnoreCase(searchStudent)) {
+
+                                foundStudents.add(student);
+                                studentFound = true;
+                            }
+                        }
+    }
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
         try {
-            Scanner input = new Scanner(System.in);
             Main mainMenu = new Main();
             ArrayList<Student> allStudents = new ArrayList<>();
 
@@ -29,7 +41,6 @@ public class Main {
             System.out.println("Enter your name");
             input.nextLine();
             String name = input.nextLine();
-            System.out.flush();
 
             System.out.println("Enter your date of birth (eg 2000 - 01 - 01)");
             String dobStr = input.nextLine();
@@ -54,17 +65,30 @@ public class Main {
             }
             case 2: {
             // second 
-
-            if (allStudents == null) {
-            System.out.println("Student list is empty");
-            }
-            else {
-            allStudents.forEach(student -> student.displayStudentInfo());
-            }
-            break;
-            }
+                if (allStudents == null) {
+                System.out.println("Student list is empty");
+                }
+                else {
+                allStudents.forEach(student -> student.displayStudentInfo());
+                }
+                break;
+                }
             case 3: {
             // third option
+                for (Student student : allStudents) {
+                    if (student.scores != null) {
+                        System.out.println("Student: " + student.getName() + " - Average Score: " + student.calculateAverageScore());
+                    } else {
+                        System.out.println("Student: " + student.getName() + " - Scores not set.");
+                        System.out.println("Enter scores for " + student.getName() + ": ");
+                        for (int i = 0; i < student.courses.length; i++) {
+                            System.out.println("Course " + (i + 1) + ": " + student.courses[i]);
+                            student.scores[i] = input.nextDouble();
+                        }
+                        System.out.println("Average Score for " + student.getName() + ": " + student.calculateAverageScore());
+                        
+                    }
+                }
             break;
             }
             case 4: {
@@ -81,14 +105,15 @@ public class Main {
             }
             }
 }
-        }
+        } 
         catch (Exception e) {
             System.out.println("Something went wrong...");
         }
 
         finally {
             System.out.println();
+            input.close();
         }
     }
-
 }
+    
