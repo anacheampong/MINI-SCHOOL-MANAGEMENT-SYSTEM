@@ -14,26 +14,16 @@ public class Main {
             """);
     }
 
-    public void findStudents(ArrayList<Student> allStudents, ArrayList<Student> foundStudents, boolean studentFound, String searchStudent) {
-        // method to find students by name or ID
-        for (Student student : allStudents) {
-                            if (student.getStudentID().equalsIgnoreCase(searchStudent)
-                                    || student.getName().equalsIgnoreCase(searchStudent)) {
-
-                                foundStudents.add(student);
-                                studentFound = true;
-                            }
-                        }
-    }
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         try {
             Main mainMenu = new Main();
             ArrayList<Student> allStudents = new ArrayList<>();
 
-            while (true) {
+            int choice;
+            do {
             mainMenu.displayMenu();
-            int choice = input.nextInt();
+            choice = input.nextInt();
 
             switch (choice) {
             case 1: {
@@ -60,12 +50,12 @@ public class Main {
 
             Student student = new Student(name, DOB, programOfStudy, courses);
             allStudents.add(student);
+            System.out.println("Student added successfully!\n");
 
             break;
             }
             case 2: {
-            // second 
-                if (allStudents == null) {
+                if (allStudents.isEmpty()) {
                 System.out.println("Student list is empty");
                 }
                 else {
@@ -76,39 +66,59 @@ public class Main {
             case 3: {
             // third option
                 for (Student student : allStudents) {
-                    if (student.scores != null) {
+                    if (student.hasScores()) {
                         System.out.println("Student: " + student.getName() + " - Average Score: " + student.calculateAverageScore());
                     } else {
                         System.out.println("Student: " + student.getName() + " - Scores not set.");
                         System.out.println("Enter scores for " + student.getName() + ": ");
-                        for (int i = 0; i < student.courses.length; i++) {
-                            System.out.println("Course " + (i + 1) + ": " + student.courses[i]);
-                            student.scores[i] = input.nextDouble();
+
+                        double [] scores = new double[student.getNumberOfCourses()];
+                        for (int i = 0; i < student.getNumberOfCourses(); i++) {
+                            System.out.println("Course " + (i + 1) + ": " + student.getCourses().split(" ")[i]);
+                            scores[i] = input.nextDouble();
                         }
+                        student.setScores(scores);
                         System.out.println("Average Score for " + student.getName() + ": " + student.calculateAverageScore());
                         
                     }
                 }
-            break;
+                break;
             }
             case 4: {
-            // fourth option
-            break;
+                if (allStudents.isEmpty()) {
+                    System.out.println("\nList is empty!\n");
+                } else {
+                    System.out.println("Enter student name or ID: ");
+                    String searchName = input.next();
+                    for (Student student : allStudents) {
+                        if (student.getStudentID().contains(searchName)|| student.getName().contains(searchName)) {
+                            student.displayStudentInfo();
+                            System.out.println("\nStudent found!");
+                            break;
+                        }
+                        else {
+                            System.out.println("\nStudent not found...\n");
+                        }
+                    }
+                }
+                break;
             }
             case 5: {
-            // fifth option
-            break;
+                System.out.println("\nExited sucessfully!\n");
+                break;
             }
             default: {
-            // invalid option
-            break;
+                System.out.println("\nInvalid option. Try again...\n");
+                break;
             }
-            }
-}
+            } 
+        } while (choice != 5);
         } 
+
         catch (Exception e) {
             System.out.println("Something went wrong...");
         }
+    
 
         finally {
             System.out.println();

@@ -7,8 +7,8 @@ public class Student {
     private String name;
     LocalDate dateOfBirth;
     String programOfStudy;
-    String[] courses;
-    double[] scores;
+    private String[] courses;
+    private double[] scores;
 
     public Student(String name, LocalDate dateOfBirth, String programOfStudy, String[] courses){
         if (name == null || name.trim().isEmpty()) {
@@ -18,8 +18,11 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
         this.programOfStudy = programOfStudy;
         this.courses = courses;
-        this.StudentID = "STU - %04d".formatted(idCounter);
-        idCounter++;
+        this.StudentID = "STU - %04d".formatted(idCounter++);
+    
+        if (scores != null) {
+            setScores(scores);
+        }
     }
 
     public String getName() {
@@ -30,32 +33,54 @@ public class Student {
         return StudentID;
     }
 
+    public String getCourses() {
+        StringBuilder courseList = new StringBuilder();
+        for (String course : courses) {
+            courseList.append(course).append(" ");
+        }
+        return courseList.toString().trim();
+    }
+
+    public int getNumberOfCourses() {
+        return courses.length;
+    }
+
+    public void setCourses(String[] courses) {
+        if (courses == null || courses.length == 0) {
+            throw new IllegalArgumentException("Courses cannot be empty.");
+        }
+        this.courses = courses;
+    }
+
     public void displayStudentInfo() {
         System.out.println("Student ID: " + StudentID);
         System.out.println("Name: " + name);
         System.out.println("Date of Birth: " + dateOfBirth);
         System.out.println("Program of Study: " + programOfStudy);
         System.out.print("Courses: ");
-        for (String course : courses) {
-            System.out.print(course + " ");
-        }
-        System.out.println();
+        System.out.println(this.getCourses());
     }
 
     public void setScores(double[] scores) {
-        if (scores == null || scores.length != courses.length) {
-            throw new IllegalArgumentException("Scores array must match the number of courses.");
-        }
-        for (double score : scores) {
-            if (score < 0 || score > 100) {
-                throw new IllegalArgumentException("Scores must be between 0 and 100.");
-            }
-            this.scores = scores;
-        }
+    if (scores == null || scores.length != courses.length) {
+        throw new IllegalArgumentException("Scores array must match the number of courses.");
     }
 
+    for (double score : scores) {
+        if (score < 0 || score > 100) {
+            throw new IllegalArgumentException("Scores must be between 0 and 100.");
+        }
+    }
+    this.scores = scores;
+    }
+
+    public boolean hasScores() {
+    return scores != null;
+    }
+
+
     public double calculateAverageScore() {
-        if (scores == null || scores.length == 0) {
+        if (!hasScores() || scores.length == 0) {
             throw new IllegalStateException("Scores have not been set.");
         }
         double total = 0;
